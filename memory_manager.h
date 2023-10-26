@@ -17,7 +17,8 @@ enum AllocStrat {First, Best};
 
 class MemoryManager {
 public:
-    MemoryManager();
+    MemoryManager(AllocStrat strategy);
+    ~MemoryManager();
 
     // Function to allocate memory chunk of specified size
     void* alloc(size_t chunk_size);
@@ -25,8 +26,11 @@ public:
     // Function to deallocate a previously allocated memory chunk
     void dealloc(void* chunk);
 
-    // Function to set the allocation strategy (not implemented in this class)
-    // Implement this in your own code.
+    // Prints the allocated list chunk by chunk
+    void printAllocated();
+
+    // Print the free list chunk by chunk
+    void printFree();
 
 private:
     struct Allocation {
@@ -37,6 +41,9 @@ private:
 
     list<Allocation*> allocatedChunks; // List of pointers to occupied chunks
     list<Allocation*> freeChunks;     // List of pointers to free chunks
+
+    void* heapFrontier;
+    AllocStrat selectedStrategy;
 };
 
 #endif // MEMORY_MANAGER_H
