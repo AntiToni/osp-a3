@@ -32,6 +32,10 @@ public:
     // Print the free list chunk by chunk
     void printFree();
 
+    // Print internal/external fragmentation amount in memory
+    void printIntFrag();
+    void printExtFrag();
+
 private:
     struct Allocation {
         size_t size;

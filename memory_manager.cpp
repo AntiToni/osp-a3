@@ -59,6 +59,10 @@ int main(int argc, char* argv[]) {
     // Print both lists
     manager.printAllocated();
     manager.printFree();
+
+    // Print Internal and External Fragmentation
+    manager.printIntFrag();
+    manager.printExtFrag();
 }
 
 MemoryManager::MemoryManager(AllocStrat strategy) {
@@ -192,6 +196,7 @@ void MemoryManager::printAllocated() {
     for (const Allocation* allocation : allocatedChunks) {
         cout << "Address: " << allocation->space << ", Total Size: " << allocation->size << ", Used Size: " << allocation->used_size << endl;
     }
+    cout << endl;
 }
 
 void MemoryManager::printFree() {
@@ -199,4 +204,34 @@ void MemoryManager::printFree() {
     for (const Allocation* allocation : freeChunks) {
         cout << "Address: " << allocation->space << ", Total Size: " << allocation->size << endl;
     }
+    cout << endl;
+}
+
+void MemoryManager::printIntFrag() {
+    cout << "Size of Internal Fragmentation:" << endl;
+
+    size_t intFrag = 0;
+    // For each chunk in allocated list, add up internal fragmentation
+    
+    for (auto it = allocatedChunks.begin(); it != allocatedChunks.end(); ++it) {
+        Allocation* allocation = *it;
+        size_t unused = allocation->size - allocation->used_size;
+        intFrag += unused;
+    }
+
+    cout << intFrag << " bytes" << endl << endl;
+}
+
+void MemoryManager::printExtFrag() {
+    cout << "Size of \"External Fragmentation\" (Unused chunks in free list):" << endl;
+
+    size_t extFrag = 0;
+    // For each chunk in allocated list, add up internal fragmentation
+    
+    for (auto it = freeChunks.begin(); it != freeChunks.end(); ++it) {
+        Allocation* allocation = *it;
+        extFrag += allocation->size;
+    }
+
+    cout << extFrag << " bytes" << endl << endl;
 }
